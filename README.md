@@ -66,6 +66,34 @@ reg import quantum_tls_gpo.reg
 - ✅ This script builds a solid foundation for current and near-future cryptographic standards.
 
 ---
+## Troubleshooting
+
+SmartApp Control Blocking Scripts or Registry Files
+Windows 11's SmartApp Control may block running unsigned PowerShell scripts or importing .reg files to protect your system.
+
+### If you encounter blocking issues:
+
+Unblock the file:
+- Right-click the file → Properties → Check Unblock → Apply.
+
+Run PowerShell script with elevated permissions:
+- Open PowerShell as Administrator.
+
+Temporarily bypass execution policy:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+.\quantum_tls_hardening.ps1
+```
+Import registry files manually:
+- Right-click the .reg file → Merge, or open Registry Editor as Administrator and import manually.
+
+Disable SmartApp Control temporarily (not recommended):
+- Go to Windows Security → App & browser control → Smart App Control → Toggle Off.
+
+Use PowerShell to apply registry keys directly:
+- Convert .reg contents into PowerShell commands to apply registry changes without using .reg files.
+- Manually add registry keys using regedit if file import is blocked.
+- Digitally sign your scripts or registry files for trusted execution.
 
 ## Credits
 
