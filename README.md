@@ -70,7 +70,7 @@ reg import quantum_tls_gpo.reg
 ## Credits
 
 - 🙏 Inspired by [jbratu’s IIS Perfect Forward Secrecy setup script](https://gist.github.com/jbratu/6262684939e15e638892973f5f8eed78)
-- 🤖 Enhanced and extended by ChatGPT (OpenAI)
+- Created with the assistance of [OpenAI](https://openai.com) and [ChatGPT](https://chat.openai.com), for automation, formatting, and research. Full [conversation](https://chatgpt.com/share/683b7e3e-1214-8000-a615-9a368e150225).
 
 ---
 
