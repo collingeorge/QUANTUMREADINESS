@@ -1,10 +1,6 @@
-# QUANTUMREADINESS
-
 # Windows 11 TLS Hardening & Quantum-Safe Preparation Script
 
-![Windows Logo](https://th.bing.com/th/id/R.56faa97c7237a7bef5a409ea701be1b0?rik=2mCvOdSna6un5w&riu=http%3a%2f%2f1000logos.net%2fwp-content%2fuploads%2f2017%2f06%2fWindows-Logo.png&ehk=GUU5dtq3QpNLGqKXJJzipTP56BwO5N4shpMgSAoDb3k%3d&risl=&pid=ImgRaw&r=0)
-
-> Harden Windows 11 TLS settings, enforce Perfect Forward Secrecy, and prepare for quantum-safe cryptography.
+🛡️ Harden Windows 11 TLS settings, enforce Perfect Forward Secrecy, and prepare for quantum-safe cryptography.
 
 ---
 
@@ -12,11 +8,11 @@
 
 This project provides a **PowerShell script** and a **Group Policy registry file** that:
 
-- Disables weak legacy TLS/SSL protocols (SSL 2.0/3.0, TLS 1.0/1.1)
-- Enables only TLS 1.2 and TLS 1.3 with strong cipher suites enforcing Perfect Forward Secrecy (PFS)
-- Activates DNS-over-HTTPS for encrypted DNS queries
-- Enables Windows Credential Guard for enhanced credential security
-- Lays groundwork for future quantum-safe cryptographic adoption
+- 🔒 Disables weak legacy TLS/SSL protocols (SSL 2.0/3.0, TLS 1.0/1.1)
+- 🔐 Enables only TLS 1.2 and TLS 1.3 with strong cipher suites enforcing Perfect Forward Secrecy (PFS)
+- 🌐 Activates DNS-over-HTTPS for encrypted DNS queries
+- 🛠️ Enables Windows Credential Guard for enhanced credential security
+- 🔮 Lays groundwork for future quantum-safe cryptographic adoption
 
 ---
 
@@ -28,12 +24,12 @@ Windows supports legacy crypto protocols that pose security risks and enable tra
 
 ## Features
 
-- **Legacy Protocols Disabled:** SSL 2.0, SSL 3.0, TLS 1.0, TLS 1.1 turned off
-- **TLS 1.2 & 1.3 Enabled:** Only secure and modern protocols allowed
-- **Cipher Suites Curated:** AES-256 and ECDHE-based ciphers for PFS
-- **Encrypted DNS Enabled:** Uses DNS-over-HTTPS (DoH)
-- **Credential Guard Enabled:** Protects secrets with virtualization-based security
-- **Quantum-Ready:** Prepares Windows for post-quantum TLS upgrades
+- ❌ Legacy Protocols Disabled: SSL 2.0, SSL 3.0, TLS 1.0, TLS 1.1 turned off
+- ✔️ TLS 1.2 & 1.3 Enabled: Only secure and modern protocols allowed
+- 🔑 Cipher Suites Curated: AES-256 and ECDHE-based ciphers for PFS
+- 🌍 Encrypted DNS Enabled: Uses DNS-over-HTTPS (DoH)
+- 🛡️ Credential Guard Enabled: Protects secrets with virtualization-based security
+- 🚀 Quantum-Ready: Prepares Windows for post-quantum TLS upgrades
 
 ---
 
@@ -45,26 +41,43 @@ Windows supports legacy crypto protocols that pose security risks and enable tra
 # Run PowerShell as Administrator
 .\quantum_tls_hardening.ps1
 ```
-- The script backs up existing SCHANNEL settings
-- Applies new TLS and cipher suite policies
-- Enables DNS-over-HTTPS and Credential Guard
-- Requires reboot to apply changes
+
+- 🗂️ The script backs up existing SCHANNEL settings
+- ⚙️ Applies new TLS and cipher suite policies
+- 🌐 Enables DNS-over-HTTPS and Credential Guard
+- 🔄 Requires reboot to apply changes
+
+### Group Policy Registry File
 
 ```powershell
 reg import quantum_tls_gpo.reg
 ```
-- Import on target machines
-- Reboot to activate policies
+
+- 🖥️ Import on target machines
+- 🔄 Reboot to activate policies
+
+---
 
 ## Important Notes
-- Secure Boot and TPM 2.0 must be enabled manually via BIOS/UEFI.
-- Current cipher suites use classical algorithms with PFS — quantum-safe algorithms are not yet supported natively by Windows.
-- For fully quantum-safe TLS, use hybrid TLS stacks via reverse proxies (e.g., NGINX + OpenQuantumSafe).
-- This script builds a solid foundation for current and near-future cryptographic standards.
 
-## License
-MIT License — Feel free to use, modify, and distribute.
+- ⚠️ **Secure Boot and TPM 2.0** must be enabled manually via BIOS/UEFI.
+- ⚠️ Current cipher suites use classical algorithms with PFS — quantum-safe algorithms are not yet supported natively by Windows.
+- ⚠️ For fully quantum-safe TLS, use hybrid TLS stacks via reverse proxies (e.g., NGINX + OpenQuantumSafe).
+- ✅ This script builds a solid foundation for current and near-future cryptographic standards.
+
+---
 
 ## Credits
-- Inspired by jbratu’s IIS Perfect Forward Secrecy setup script
-- Enhanced and extended by ChatGPT (OpenAI)
+
+- 🙏 Inspired by [jbratu’s IIS Perfect Forward Secrecy setup script](https://gist.github.com/jbratu/6262684939e15e638892973f5f8eed78)
+- 🤖 Enhanced and extended by ChatGPT (OpenAI)
+
+---
+
+## License
+
+MIT License — Feel free to use, modify, and distribute.
+
+---
+
+*Stay secure today, prepare for tomorrow.*
