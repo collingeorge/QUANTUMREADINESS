@@ -62,6 +62,9 @@ reg import quantum_tls_gpo.reg
 - For fully quantum-safe TLS, use hybrid TLS stacks via reverse proxies (e.g., NGINX + OpenQuantumSafe).
 - This script builds a solid foundation for current and near-future cryptographic standards.
 
+## License
+MIT License — Feel free to use, modify, and distribute.
+
 ## Credits
 - Inspired by jbratu’s IIS Perfect Forward Secrecy setup script
 - Enhanced and extended by ChatGPT (OpenAI)
