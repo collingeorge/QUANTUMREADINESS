@@ -2,7 +2,7 @@
 
 # Windows 11 TLS Hardening & Quantum-Safe Preparation Script
 
-![Windows Logo](https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2021.svg)
+![Windows Logo](https://th.bing.com/th/id/R.56faa97c7237a7bef5a409ea701be1b0?rik=2mCvOdSna6un5w&riu=http%3a%2f%2f1000logos.net%2fwp-content%2fuploads%2f2017%2f06%2fWindows-Logo.png&ehk=GUU5dtq3QpNLGqKXJJzipTP56BwO5N4shpMgSAoDb3k%3d&risl=&pid=ImgRaw&r=0)
 
 > Harden Windows 11 TLS settings, enforce Perfect Forward Secrecy, and prepare for quantum-safe cryptography.
 
