@@ -1,6 +1,6 @@
 # Windows 11 TLS Hardening & Quantum-Safe Preparation Script
 
-🛡️ Harden Windows 11 TLS settings, enforce Perfect Forward Secrecy, and prepare for quantum-safe cryptography.
+🛡️ Harden Windows 11 24h2 TLS settings, enforce Perfect Forward Secrecy, and prepare for quantum-safe cryptography.
 
 ---
 
@@ -95,25 +95,22 @@ Use PowerShell to apply registry keys directly:
 - Manually add registry keys using regedit if file import is blocked.
 - Digitally sign your scripts or registry files for trusted execution.
 
----
+## 🛠️ Requirements
+Windows 11 24h2
 
-## Credits
+Admin privileges
 
-- 🙏 Inspired by [jbratu’s IIS Perfect Forward Secrecy setup script](https://gist.github.com/jbratu/6262684939e15e638892973f5f8eed78)
-- Created with the assistance of [OpenAI](https://openai.com) and [ChatGPT](https://chat.openai.com), for automation, formatting, and research. Full [conversation](https://chatgpt.com/share/683b7e3e-1214-8000-a615-9a368e150225).
-
----
+PowerShell 5.0+ (built-in)
 
 ## 📥 Contribute
 
 Have a trustworthy threat feed to recommend? Submit a pull request or open an issue.
 
----
+## 📜 License
+MIT License
 
-## License
-
-MIT License — Feel free to use, modify, and distribute.
-
----
+## 🙋‍♂️ Support
+Need help with .reg, .bat, .exe, or GPO/Intune deployment?
+Open an issue or PR and we’ll assist you!
 
 *Stay secure today, prepare for tomorrow.*
