@@ -95,10 +95,18 @@ Use PowerShell to apply registry keys directly:
 - Manually add registry keys using regedit if file import is blocked.
 - Digitally sign your scripts or registry files for trusted execution.
 
+---
+
 ## Credits
 
 - 🙏 Inspired by [jbratu’s IIS Perfect Forward Secrecy setup script](https://gist.github.com/jbratu/6262684939e15e638892973f5f8eed78)
 - Created with the assistance of [OpenAI](https://openai.com) and [ChatGPT](https://chat.openai.com), for automation, formatting, and research. Full [conversation](https://chatgpt.com/share/683b7e3e-1214-8000-a615-9a368e150225).
+
+---
+
+## 📥 Contribute
+
+Have a trustworthy threat feed to recommend? Submit a pull request or open an issue.
 
 ---
 
