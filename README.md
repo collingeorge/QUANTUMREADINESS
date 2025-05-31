@@ -66,7 +66,7 @@ reg import quantum_tls_gpo.reg
 - ✅ This script builds a solid foundation for current and near-future cryptographic standards.
 
 ---
-## Troubleshooting
+## 🧰 Troubleshooting
 
 SmartApp Control Blocking Scripts or Registry Files
 Windows 11's SmartApp Control may block running unsigned PowerShell scripts or importing .reg files to protect your system.
