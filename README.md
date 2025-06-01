@@ -49,6 +49,12 @@ This script hardens your Windows system’s TLS stack by disabling outdated prot
 4. **Reboot your system** to apply all changes.
 
 ---
+## Limitations and Future Directions
+- This script enforces best-in-class classical TLS security currently available on Windows 11 but does not implement true post-quantum cryptographic algorithms yet.
+- For full quantum resistance, integration of post-quantum TLS libraries (e.g., Open Quantum Safe OpenSSL variants) or vendor support is required.
+- Keep your Windows updates current as Microsoft may add improved quantum-safe features in the future.
+
+---
 
 ## Future Work
 
