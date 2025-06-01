@@ -1,100 +1,71 @@
-# Windows 11 TLS Hardening & Quantum-Safe Preparation Script
+# QUANTUMREADINESS
 
-This project provides a PowerShell script and a Group Policy registry file that:
+## Overview
 
-- Disables weak legacy TLS/SSL protocols (SSL 2.0/3.0, TLS 1.0/1.1)
-- Enables only TLS 1.2 and TLS 1.3 with strong cipher suites enforcing Perfect Forward Secrecy (PFS)
-- Activates DNS-over-HTTPS for encrypted DNS queries
-- Enables Windows Credential Guard for enhanced credential security
-- Lays groundwork for future quantum-safe cryptographic adoption
+This repository provides tools and scripts to harden Windows TLS/SSL configurations to prepare for the upcoming era of quantum computing. The core component is a PowerShell script that:
 
-## Why Harden TLS on Windows 11?
+- Disables legacy and insecure SSL/TLS protocols (SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1).
+- Enables and enforces TLS 1.2 and TLS 1.3 protocols with a curated list of strong cipher suites.
+- Applies recommended cipher suite ordering for TLS 1.2 and enables secure TLS 1.3 cipher suites.
+- Enables strong cryptography in .NET Framework versions for improved security.
+- Ensures system-wide configuration to improve resistance against future quantum attacks on traditional cryptographic algorithms.
 
-Windows supports legacy crypto protocols that pose security risks and enable traffic interception. Perfect Forward Secrecy ensures session keys cannot be retroactively compromised, and encrypted DNS protects DNS queries from eavesdropping. Preparing for quantum-safe cryptography means your systems will be more resilient against future quantum computer attacks.
+---
 
-## Features
+## Why This Matters
 
-- Legacy Protocols Disabled: SSL 2.0, SSL 3.0, TLS 1.0, TLS 1.1 turned off
-- TLS 1.2 & 1.3 Enabled: Only secure and modern protocols allowed
-- Cipher Suites Curated: AES-256 and ECDHE-based ciphers for PFS
-- Encrypted DNS Enabled: Uses DNS-over-HTTPS (DoH)
-- Credential Guard Enabled: Protects secrets with virtualization-based security
-- Quantum-Ready: Prepares Windows for post-quantum TLS upgrades
+Quantum computers, once fully operational, will have the ability to break many classical cryptographic algorithms currently used to secure internet communications. Preparing systems today to use quantum-resistant or quantum-ready protocols and configurations is crucial to:
+
+- Prevent data breaches caused by cryptographic vulnerabilities.
+- Maintain compliance with evolving security standards.
+- Protect sensitive data and infrastructure from future quantum threats.
+
+This script hardens your Windows system’s TLS stack by disabling outdated protocols and enabling the strongest available cipher suites, laying a solid foundation for future quantum-safe upgrades.
+
+---
+
+## Features of the Quantum-Safe TLS Hardening Script
+
+- **Disables Legacy Protocols:** Removes support for SSL 2.0, SSL 3.0, TLS 1.0, and TLS 1.1 to eliminate known vulnerabilities.
+- **Enables TLS 1.2 and TLS 1.3:** Activates the most secure versions of the TLS protocol.
+- **Sets Recommended Cipher Suites:** Applies a carefully curated and ordered list of cipher suites optimized for security and performance.
+- **Enables Strong .NET Cryptography:** Configures .NET Framework to use strong cryptographic algorithms for applications dependent on it.
+- **Admin Rights Check:** Ensures the script runs with necessary privileges to modify system registry settings.
+- **Clear Logging:** Provides console output to track configuration changes and status.
+
+---
 
 ## Usage
 
-### PowerShell Script
+1. **Run PowerShell as Administrator** to ensure the script has the required permissions.
+2. Save the script as `QuantumSafeTLSHardening.ps1`.
+3. Execute the script:
 
-```powershell
-# Run PowerShell as Administrator
-.\quantum_tls_hardening.ps1
-```
+    ```powershell
+    Set-ExecutionPolicy RemoteSigned -Scope Process
+    .\QuantumSafeTLSHardening.ps1
+    ```
 
-- The script backs up existing SCHANNEL settings
-- Applies new TLS and cipher suite policies
-- Enables DNS-over-HTTPS and Credential Guard
-- Requires reboot to apply changes
+4. **Reboot your system** to apply all changes.
 
-### Group Policy Registry File
+---
 
-```powershell
-reg import quantum_tls_gpo.reg
-```
+## Future Work
 
-- Import on target machines
-- Reboot to activate policies
+- Integration with quantum-safe cipher suites and protocols as they become available on Windows.
+- Automated detection and reporting of current TLS configuration status.
+- Support for additional Windows versions and server roles.
 
-## Troubleshooting
+---
 
-**SmartApp Control Blocking Scripts or Registry Files**
+## References
 
-Windows 11's SmartApp Control may block running unsigned PowerShell scripts or importing .reg files to protect your system.
+- [Microsoft TLS Best Practices](https://docs.microsoft.com/en-us/windows-server/security/tls/tls-registry-settings)
+- [NIST Post-Quantum Cryptography](https://csrc.nist.gov/projects/post-quantum-cryptography)
+- [Open Quantum Safe Project](https://openquantumsafe.org)
 
-### If you encounter blocking issues:
-
-Unblock the file:
-
-- Right-click the file → Properties → Check Unblock → Apply
-
-Run PowerShell script with elevated permissions:
-
-- Open PowerShell as Administrator
-
-Temporarily bypass execution policy:
-
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
-.\quantum_tls_hardening.ps1
-```
-
-Import registry files manually:
-
-- Right-click the .reg file → Merge, or open Registry Editor as Administrator and import manually.
-
-Disable SmartApp Control temporarily (not recommended):
-
-- Go to Windows Security → App & browser control → Smart App Control → Toggle Off
-
-Use PowerShell to apply registry keys directly:
-
-- Convert .reg contents into PowerShell commands to apply registry changes without using .reg files
-- Manually add registry keys using regedit if file import is blocked
-- Digitally sign your scripts or registry files for trusted execution
-
-## Requirements
-
-- Windows 11 24h2
-- Admin privileges
-- PowerShell 5.0+ (built-in)
-
-## Contribute
-
-Have a trustworthy threat feed to recommend? Submit a pull request or open an issue.
+---
 
 ## License
 
-MIT License
-
-## Support
-
-Need help with .reg, .bat, .exe, or GPO/Intune deployment? Open an issue or PR and assistance will be provided.
+This project is licensed under the MIT License - see the LICENSE file for details.
