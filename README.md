@@ -98,5 +98,3 @@ MIT License
 ## Support
 
 Need help with .reg, .bat, .exe, or GPO/Intune deployment? Open an issue or PR and assistance will be provided.
-
-*Stay secure today, prepare for tomorrow.*
