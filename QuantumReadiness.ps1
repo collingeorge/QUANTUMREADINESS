@@ -91,3 +91,10 @@ foreach ($version in $netVersions) {
     }
     Set-ItemProperty -Path $netPath -Name "SchUseStrongCrypto" -Value 1 -Type DWord
     Write-Host "Enabled strong cryptography for .NET $version"
+}
+
+Write-Host "TLS hardening and cipher suite configuration complete." -ForegroundColor Green
+Write-Host "Please reboot your system to apply all changes."
+
+# Uncomment if you want to restart IIS automatically
+# Restart-Service -Name W3SVC
