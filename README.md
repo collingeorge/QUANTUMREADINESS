@@ -38,7 +38,7 @@ This script hardens your Windows system’s TLS stack by disabling outdated prot
 ## Usage
 
 1. **Run PowerShell as Administrator** to ensure the script has the required permissions.
-2. Save the script as `QuantumSafeTLSHardening.ps1`.
+2. Save the script as `QuantumReadiness.ps1`.
 3. Execute the script:
 
     ```powershell
