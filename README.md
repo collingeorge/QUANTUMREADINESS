@@ -43,7 +43,7 @@ This script hardens your Windows system’s TLS stack by disabling outdated prot
 
     ```powershell
     Set-ExecutionPolicy RemoteSigned -Scope Process
-    .\QuantumSafeTLSHardening.ps1
+    .\QuantumReadiness.ps1
     ```
 
 4. **Reboot your system** to apply all changes.
