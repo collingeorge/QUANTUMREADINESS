@@ -75,3 +75,7 @@ This script hardens your Windows system’s TLS stack by disabling outdated prot
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Credits
+
+This guide was prepared with the assistance of [ChatGPT by OpenAI](https://openai.com/chatgpt), published [here](https://chatgpt.com/share/683f2294-7044-8000-ae54-aade7dcc5637)
