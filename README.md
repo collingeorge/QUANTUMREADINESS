@@ -78,4 +78,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ## Credits
 
-This guide was prepared with the assistance of [ChatGPT by OpenAI](https://openai.com/chatgpt), published [here](https://chatgpt.com/share/683f2294-7044-8000-ae54-aade7dcc5637)
+Created with the assistance of [OpenAI](https://openai.com) and [ChatGPT](https://chat.openai.com), for automation, formatting, and research, published [here](https://chatgpt.com/share/683f2294-7044-8000-ae54-aade7dcc5637)
