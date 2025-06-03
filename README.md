@@ -74,7 +74,7 @@ This script hardens your Windows system’s TLS stack by disabling outdated prot
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/collingeorge/QUANTUMREADINESS/blob/main/LICENSE) file for details.
 
 ## Credits
 
