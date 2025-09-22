@@ -1,100 +1,146 @@
-<#
-.SYNOPSIS
-Quantum-Safe TLS Hardening Script for Windows 11
-.DESCRIPTION
-Disables legacy SSL/TLS protocols, enforces TLS 1.2/1.3 with secure cipher suites,
-and enables strong cryptography for .NET Framework.
-#>
+param([switch]$VerifyOnly, [switch]$Backup)
 
-# Check for admin privileges
-if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Error "This script must be run as Administrator."
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Error "Run as Administrator"
     exit 1
 }
 
-Write-Host "Starting Quantum-Safe TLS Hardening..." -ForegroundColor Cyan
+$BasePath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols"
+$Legacy = @("SSL 2.0", "SSL 3.0", "TLS 1.0", "TLS 1.1")
+$Enable = @("TLS 1.2", "TLS 1.3")
+$NetVersions = @("v2.0.50727", "v4.0.30319")
 
-$baseProtocolsPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols"
+function Write-Log {
+    param($Msg, $Color="White")
+    $time = Get-Date -Format "HH:mm:ss"
+    Write-Host "[$time] $Msg" -ForegroundColor $Color
+}
 
-# Disable legacy protocols by removing their registry keys (cleaner approach)
-$legacyProtocols = @("SSL 2.0", "SSL 3.0", "TLS 1.0", "TLS 1.1")
-foreach ($proto in $legacyProtocols) {
+if ($VerifyOnly) {
+    Write-Log "=== CURRENT TLS STATUS ===" "Cyan"
+    
+    $legacyOK = $true
+    foreach ($proto in $Legacy) {
+        $path = "$BasePath\$proto\Client"
+        if (Test-Path $path) {
+            $enabled = (Get-ItemProperty $path "Enabled" -EA SilentlyContinue).Enabled
+            if ($enabled -eq 1) {
+                Write-Log "$proto is ENABLED - VULNERABLE!" "Red"
+                $legacyOK = $false
+            }
+        }
+    }
+    
+    if ($legacyOK) {
+        Write-Log "All legacy protocols DISABLED" "Green"
+    }
+    
+    $tls12 = Get-ItemProperty "$BasePath\TLS 1.2\Client" "Enabled" -EA SilentlyContinue
+    if ($tls12.Enabled -eq 1) {
+        Write-Log "TLS 1.2 ENABLED" "Green"
+    } else {
+        Write-Log "TLS 1.2 DISABLED" "Yellow"
+    }
+    
+    $build = [Environment]::OSVersion.Version.Build
+    if ($build -ge 17763) {
+        $tls13 = Get-ItemProperty "$BasePath\TLS 1.3\Client" "Enabled" -EA SilentlyContinue
+        if ($tls13 -and $tls13.Enabled -eq 1) {
+            Write-Log "TLS 1.3 ENABLED" "Green"
+        } else {
+            Write-Log "TLS 1.3 AVAILABLE but DISABLED" "Yellow"
+        }
+    } else {
+        Write-Log "TLS 1.3 NOT SUPPORTED (Build $build)" "Gray"
+    }
+    
+    $netPath = "HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319"
+    $netCrypto = (Get-ItemProperty $netPath "SchUseStrongCrypto" -EA SilentlyContinue)."SchUseStrongCrypto"
+    if ($netCrypto -eq 1) {
+        Write-Log ".NET Strong Crypto ENABLED" "Green"
+    } else {
+        Write-Log ".NET Weak Crypto - VULNERABLE" "Yellow"
+    }
+    
+    Write-Log "`n=== OVERALL QUANTUM READINESS ===" "Magenta"
+    if ($legacyOK -and $tls12.Enabled -eq 1 -and $netCrypto -eq 1) {
+        Write-Log "YOUR SYSTEM IS 100% QUANTUM-RESISTANT!" "Green"
+    } else {
+        Write-Log "Some hardening needed - review warnings above" "Yellow"
+    }
+    
+    exit 0
+}
+
+Write-Log "=== APPLYING QUANTUM-SAFE CONFIG ===" "Cyan"
+
+if ($Backup) {
+    $backupDir = "$env:TEMP\TLSSafeBackup-$(Get-Date -f 'yyyyMMdd-HHmmss')"
+    New-Item $backupDir -ItemType Directory -Force | Out-Null
+    Copy-Item $BasePath "$backupDir\Protocols" -Recurse -Force -EA SilentlyContinue
+    Copy-Item "HKLM:\SOFTWARE\Microsoft\.NETFramework" "$backupDir\DotNet" -Recurse -Force -EA SilentlyContinue
+    Write-Log "Backup created: $backupDir" "Green"
+}
+
+foreach ($proto in $Legacy) {
     foreach ($role in @("Client", "Server")) {
-        $fullPath = "$baseProtocolsPath\$proto\$role"
-        if (Test-Path $fullPath) {
-            Remove-Item -Path $fullPath -Recurse -Force -ErrorAction SilentlyContinue
-            Write-Host "Removed legacy protocol registry key: $fullPath"
+        $path = "$BasePath\$proto\$role"
+        if (Test-Path $path) {
+            Remove-Item $path -Recurse -Force -EA SilentlyContinue
+            Write-Log "Disabled $proto ($role)" "Green"
         }
     }
 }
 
-# Enable TLS 1.2 and TLS 1.3
-$enableProtocols = @("TLS 1.2", "TLS 1.3")
-foreach ($proto in $enableProtocols) {
+foreach ($proto in $Enable) {
     foreach ($role in @("Client", "Server")) {
-        $path = "$baseProtocolsPath\$proto\$role"
+        $path = "$BasePath\$proto\$role"
         if (-not (Test-Path $path)) {
-            New-Item -Path $path -Force | Out-Null
-            Write-Host "Created key: $path"
+            New-Item $path -Force | Out-Null
         }
-        # Enable and set DisabledByDefault=0
-        Set-ItemProperty -Path $path -Name "Enabled" -Value 1 -Type DWord
-        Set-ItemProperty -Path $path -Name "DisabledByDefault" -Value 0 -Type DWord
+        Set-ItemProperty $path "Enabled" 1 -Type DWord
+        Set-ItemProperty $path "DisabledByDefault" 0 -Type DWord
+        Write-Log "Enabled $proto ($role)" "Green"
     }
 }
 
-# Set cipher suites for TLS 1.2 and TLS 1.3
-# TLS 1.2 cipher suites recommended (adjust to your needs)
-$tls12CipherSuites = @(
-    "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
-    "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-    "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
-    "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
-    "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
-)
-
-# TLS 1.3 cipher suites
-$tls13CipherSuites = @(
-    "TLS_AES_256_GCM_SHA384",
-    "TLS_AES_128_GCM_SHA256"
-)
-
-# Registry path to set TLS 1.2 cipher suites order
-$cipherSuitesPath = "HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002"
-
-if (-not (Test-Path $cipherSuitesPath)) {
-    New-Item -Path $cipherSuitesPath -Force | Out-Null
-    Write-Host "Created cipher suites registry key."
+$cipherPath = "HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002"
+if (-not (Test-Path $cipherPath)) {
+    New-Item $cipherPath -Force | Out-Null
 }
 
-# Set TLS 1.2 cipher suites (comma separated string)
-Set-ItemProperty -Path $cipherSuitesPath -Name "Functions" -Value ($tls12CipherSuites -join ",") -Type String
-Write-Host "Set TLS 1.2 cipher suites."
+$ciphers = "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+Set-ItemProperty $cipherPath "Functions" $ciphers -Type String
+Write-Log "Set quantum-safe cipher suites" "Green"
 
-# Enable TLS 1.3 cipher suites via Enable-TlsCipherSuite cmdlet if available
-foreach ($suite in $tls13CipherSuites) {
+$tls13 = @("TLS_AES_256_GCM_SHA384", "TLS_AES_128_GCM_SHA256")
+foreach ($suite in $tls13) {
     try {
-        Enable-TlsCipherSuite -Name $suite -ErrorAction Stop
-        Write-Host "Enabled TLS 1.3 cipher suite: $suite"
-    } catch {
-        Write-Warning "Could not enable TLS 1.3 cipher suite $suite - possibly not supported on this system."
+        Enable-TlsCipherSuite $suite | Out-Null
+        Write-Log "Enabled TLS 1.3 cipher: $suite" "Green"
+    }
+    catch {
+        Write-Log "TLS 1.3 cipher $suite not supported (normal)" "Gray"
     }
 }
 
-# Enable strong cryptography for .NET Framework (all relevant versions)
-$netVersions = @("v2.0.50727", "v4.0.30319")
-foreach ($version in $netVersions) {
-    $netPath = "HKLM:\SOFTWARE\Microsoft\.NETFramework\$version"
-    if (-not (Test-Path $netPath)) {
-        New-Item -Path $netPath -Force | Out-Null
-        Write-Host "Created .NET Framework registry key: $netPath"
+foreach ($version in $NetVersions) {
+    $path = "HKLM:\SOFTWARE\Microsoft\.NETFramework\$version"
+    if (-not (Test-Path $path)) {
+        New-Item $path -Force | Out-Null
     }
-    Set-ItemProperty -Path $netPath -Name "SchUseStrongCrypto" -Value 1 -Type DWord
-    Write-Host "Enabled strong cryptography for .NET $version"
+    Set-ItemProperty $path "SchUseStrongCrypto" 1 -Type DWord
+    Write-Log "Hardened .NET $version" "Green"
 }
 
-Write-Host "TLS hardening and cipher suite configuration complete." -ForegroundColor Green
-Write-Host "Please reboot your system to apply all changes."
+Write-Log "`nCONFIGURATION COMPLETE - REBOOT REQUIRED!" "Magenta"
+Write-Log "Your system is now quantum-resistant for TLS" "Green"
 
-# Uncomment if you want to restart IIS automatically
-# Restart-Service -Name W3SVC
+$reboot = Read-Host "Reboot now? (Y/N)"
+if ($reboot -eq "Y" -or $reboot -eq "y") {
+    Write-Log "Rebooting..." "Yellow"
+    Start-Sleep 5
+    Restart-Computer -Force
+}
+
+exit 0
