@@ -59,14 +59,17 @@ This script hardens your Windows system’s TLS stack by disabling outdated prot
 
 1. **Run PowerShell as Administrator** to ensure the script has the required permissions.
 2. Install PowerShell Module
+
    ```powershell
    Install-Script QuantumSafe-TLS -Scope CurrentUser
    ```
 3. Run the Script
+
    ```powershell
    QuantumSafe-TLS -Backup
    ```
 4. Verify Status
+
    ```powershell
    QuantumSafe-TLS -VerifyOnly
    ```
