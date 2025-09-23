@@ -1,4 +1,47 @@
+<#PSScriptInfo
+
+.VERSION 1.0.4
+.GUID 62bb910b-2809-45d4-91b1-e44a79e3aab2
+.AUTHOR Collin George
+.COMPANYNAME 
+.COPYRIGHT 
+.LICENSEURI https://opensource.org/licenses/MIT
+.PROJECTURI https://github.com/CollinGeorge/QuantumSafe-TLS
+.TAGS TLS, QuantumSafe, Security, WindowsHardening, Crypto
+.ICONURI 
+.EXTERNALMODULEDEPENDENCIES 
+.REQUIREDSCRIPTS 
+.EXTERNALSCRIPTDEPENDENCIES 
+.RELEASENOTES
+- Improved script structure and parameter parsing
+- Verified quantum-safe TLS configuration
+- Added metadata for discoverability and licensing
+
+#>
+
+<# 
+.DESCRIPTION 
+Quantum-safe TLS script
+#>
+
+<#
+.SYNOPSIS
+Disables legacy TLS and enables quantum-safe ciphers
+.DESCRIPTION
+Quantum-safe TLS hardening for Windows
+.PARAMETER VerifyOnly
+Audit mode—no changes made.
+.PARAMETER Backup
+Creates registry backup before hardening.
+.EXAMPLE
+.\QuantumSafe-TLS.ps1 -VerifyOnly
+.EXAMPLE
+.\QuantumSafe-TLS.ps1 -Backup
+#>
+
 param([switch]$VerifyOnly, [switch]$Backup)
+
+
 
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Write-Error "Run as Administrator"
