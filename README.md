@@ -55,6 +55,24 @@ This script hardens your Windows system’s TLS stack by disabling outdated prot
 
 ## Usage
 
+### Route 1 - Install from PS Gallery:
+
+1. **Run PowerShell as Administrator** to ensure the script has the required permissions.
+2. Install PowerShell Module
+   ```powershell
+   Install-Script QuantumSafe-TLS -Scope CurrentUser
+   ```
+3. Run the Script
+   ```powershell
+   QuantumSafe-TLS -Backup
+   ```
+4. Verify Status
+   ```powershell
+   QuantumSafe-TLS -VerifyOnly
+   ```
+
+### Route 2 - From Github:
+
 1. **Run PowerShell as Administrator** to ensure the script has the required permissions.
 2. Save the script as `QuantumReadiness.ps1`.
 3. Execute the script:
@@ -73,7 +91,7 @@ This script hardens your Windows system’s TLS stack by disabling outdated prot
 4. **Reboot your system** to apply all changes.
 
 ## Example Output (VerifyOnly):
-```
+```powershell
 text[16:00:01] === CURRENT TLS STATUS ===
 [16:00:01] All legacy protocols DISABLED
 [16:00:01] TLS 1.2 ENABLED
