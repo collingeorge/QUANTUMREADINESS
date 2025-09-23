@@ -66,11 +66,13 @@ This script hardens your Windows system’s TLS stack by disabling outdated prot
 3. Run the Script
 
    ```powershell
+   # Full execution & Backup (hardens + prompts reboot)
    QuantumSafe-TLS -Backup
    ```
 4. Verify Status
 
    ```powershell
+   # Audit current configuration (no changes)
    QuantumSafe-TLS -VerifyOnly
    ```
 
